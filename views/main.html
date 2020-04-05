@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="fluid">
+        <div class="container content">
+            <h2 class="pt-3">list-maker.com</h2>
+
+            <form action="/newlist" method="POST">
+            <div class="form-group area">
+                <label for="texta"></label>
+                <textarea name="list" style="max-height: 300px;" class="form-control anim3" id="texta" rows="10" placeholder="Enter your list entries. Press the Enter key to separate the items" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-lg btn-block anim3" name="submit-text" id="submit-btn" style="opacity: 1;">Create List</button>
+            </form>
+
+            <div class="input-group my-4 anim3" style="opacity: 0;">
+                <input id="kopirovat" type="text" class="form-control" placeholder="<?php echo($messages['input_kopirovat_placeholder']);?>" value="<?php if ($created == "true"){echo "list-maker.com/".$id;}?>">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onclick="kopirovatLink()">Copy</button>
+                </span>
+            </div>
+
+        </div>
+        <footer>
+            <p class="text-center pt-3">POWERED BY <a href="http://phisolutions.cz">PHI SOLUTIONS S.R.O.</a></p>
+        </footer>
+    </div>
+</body>
+</html>
