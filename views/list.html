@@ -30,30 +30,30 @@
     const listItems = response.data
 
     if (listItems.length > 0) {
-        let idGenerator = 0
         for(let data of listItems){
 
             let inputGenerate = document.createElement("input");
             inputGenerate.classList.add('form-check-input')
             inputGenerate.type = 'checkbox'
-            inputGenerate.id = 'id' + idGenerator
+            inputGenerate.id = data.id
             document.getElementById("listGenerator").appendChild(inputGenerate);
         
             let labelGenerate = document.createElement("label");
             labelGenerate.classList.add('form-check-label', 'pl-4', 'h4')
-            labelGenerate.for = 'id' + idGenerator
+            labelGenerate.for = data.id
             labelGenerate.innerHTML = data.nameOfItem
             document.getElementById("listGenerator").appendChild(labelGenerate);
 
             let brGenerate = document.createElement("br"); 
             brGenerate.classList.add('mb-3')
             document.getElementById("listGenerator").appendChild(brGenerate);
-
-            idGenerator++
         }
     }
 
-    });
+    
+});
+        axios.post('/:itemId', {list: textArea}).then(response => {
+        textArea.innerHTML = JSON.stringify(response);})
 
 </script>
 </body>

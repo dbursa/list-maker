@@ -61,22 +61,7 @@ router.post('/newlist', function (req, res, next) {
 
 //lists
 router.get('/:listItemId', function (req, res, next) {
-  const err = true;
   res.sendFile(path.join(__dirname + '/views/list.html'));
-  /*   connection.query(
-    'SELECT * FROM ListInfo WHERE listId="' + req.params.listItemId + '"',
-    function (err, rows, fieldsListInfo) {
-      if (!err) {
-        res.sendFile(path.join(__dirname + '/views/list.html'), {
-          test: test,
-        });
-        //res.send(rows);
-        //console.log(rows);
-      } else {
-        res.status(500).json(err);
-      }
-    }
-  ); */
 });
 
 router.get('/dataItems/:listItemId', function (req, res, next) {
@@ -92,6 +77,8 @@ router.get('/dataItems/:listItemId', function (req, res, next) {
     }
   );
 });
+
+router.post('/:itemId', function (req, res, next) {});
 
 app.use('/', router);
 app.listen(process.env.port || 3000);
