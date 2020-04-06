@@ -38,21 +38,24 @@ router.post('/newlist', function (req, res, next) {
 
   if (textArray.length > 0) {
     for (let data of textArray) {
-      let databaseInput = new ListInfo(data, 1, randomString.generate(8));
-      console.log(databaseInput);
-      connection.query(
-        "INSERT INTO ListInfo (nameOfItem, bought, listId) VALUES ('databaseInput.nameOfItem', 'databaseInput.bought', 'databaseInput.listId')",
-        function (err, rows, fields) {
-          if (err) {
-            console.log(err);
-            res.status(404).json({ err });
-            return;
-          }
+      const generatedRandomString = randomString.generate(8);
+      let databaseInput = new ListInfo(data, 1, generatedRandomString);
+      const sqlQuery =
+        'INSERT INTO ListInfo (nameOfItem, bought, listId) VALUES ("' +
+        data +
+        '", 1, "' +
+        generatedRandomString +
+        '")';
+      connection.query(sqlQuery, function (err, rows, fields) {
+        if (err) {
+          console.log(err);
+          res.status(404).json({ err });
+          return;
         }
-      );
+      });
     }
   }
-  //return res.redirect('/');
+  return res.redirect('/');
 });
 
 //lists
