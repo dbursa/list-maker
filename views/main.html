@@ -3,24 +3,25 @@
     <link rel="stylesheet" href="stylesheets/style.css">
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 </head>
 <body>
     <div class="fluid">
         <div class="container content">
             <h2 class="pt-3">list-maker.com</h2>
             <p>Create a list that you can easily share with your friends or family!</p>
-            <form action="/newlist" method="POST">
+            <!-- <form action="/newlist" method="POST"> -->
             <div class="form-group area">
                 <label for="texta"></label>
                 <textarea name="list" style="max-height: 300px;" class="form-control anim3" id="texta" rows="10" placeholder="Enter your list entries. Press the Enter key to separate the items" required></textarea>
             </div>
             <button type="submit" class="btn btn-lg btn-block anim3" name="submit-text" id="submit-btn" style="opacity: 1;" onclick="generateCopyLink()">Create List</button>
-            </form>
+        <!-- </form> -->
 
             <div class="input-group my-4 anim3" id="copy" style="opacity: 0;">
                 <input id="kopirovat" type="text" class="form-control" value="link">
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" onclick="kopirovatLink()">Copy</button>
+                    <button class="btn btn-default" type="button" onclick="copyToClipboard()">Copy</button>
                 </span>
             </div>
 
@@ -29,14 +30,26 @@
             <p class="text-center pt-3">POWERED BY <a href="http://phisolutions.cz">PHI SOLUTIONS S.R.O.</a></p>
         </footer>
     </div>
+    <script> 
 
-    <script>
-      function generateCopyLink(){
-        let textAreaStatus = document.getElementById('texta');
-        let copyLink = document.getElementById('kopirovat');
+    const uri = 'http://localhost:3000/'
 
-        copyLink.style.opacity = 1
-      }
-    </script>
+        function generateCopyLink(){
+            let textArea = document.getElementById("texta").value;
+            axios.post('/newlist', {list: textArea}).then(response => {
+                textArea.innerHTML = JSON.stringify(response);
+            const baseUrl = response.data.baseUrl
+            let copyLink = document.getElementById('copy');
+            copyLink.style.opacity = 1            
+            let copyInput = document.getElementById('kopirovat').value = uri + baseUrl
+            })
+        }
+
+        function copyToClipboard(){
+            let input = document.getElementById('kopirovat');
+            input.select();
+            document.execCommand('copy');
+        }
+   </script>
 </body>
 </html>

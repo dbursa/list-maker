@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<link rel="stylesheet" href="stylesheets/style.css">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<script src="/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+</head>
+<body>
+<div class="fluid">
+    <div class="container content">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-6">
+             <h1 class="text-center text-lg-left pt-4 pb-4"><a href="/">list-maker.com</a></h1>
+            </div>
+        </div>
+        <div class="form-check" id="listGenerator">
+
+        </div>
+    </div>
+    <footer>
+        <p class="text-center pt-3">POWERED BY <a href="http://phisolutions.cz">PHI SOLUTIONS S.R.O.</a></p>
+    </footer>
+</div>
+<script> 
+
+    const urlPath = window.location.pathname
+    axios.get('/dataItems' + urlPath).then(response => {
+    console.log('lol a response kamo ' + JSON.stringify(response.data))
+
+    const listItems = response.data
+
+    if (listItems.length > 0) {
+        let idGenerator = 0
+        for(let data of listItems){
+
+            let inputGenerate = document.createElement("input");
+            inputGenerate.classList.add('form-check-input')
+            inputGenerate.type = 'checkbox'
+            inputGenerate.id = 'id' + idGenerator
+            document.getElementById("listGenerator").appendChild(inputGenerate);
+        
+            let labelGenerate = document.createElement("label");
+            labelGenerate.classList.add('form-check-label', 'pl-4', 'h4')
+            labelGenerate.for = 'id' + idGenerator
+            labelGenerate.innerHTML = data.nameOfItem
+            document.getElementById("listGenerator").appendChild(labelGenerate);
+
+            let brGenerate = document.createElement("br"); 
+            brGenerate.classList.add('mb-3')
+            document.getElementById("listGenerator").appendChild(brGenerate);
+
+            idGenerator++
+        }
+    }
+
+    });
+
+</script>
+</body>
+</html>
