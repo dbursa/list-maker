@@ -12,6 +12,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'));
+app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist'));
 
 const mysql = require('mysql');
 const connection = mysql.createConnection({
@@ -78,7 +79,29 @@ router.get('/dataItems/:listItemId', function (req, res, next) {
   );
 });
 
-router.post('/:itemId', function (req, res, next) {});
+router.post('/changeItemStatus', function (req, res, next) {
+  const itemId = req.body.id;
+  const bought = req.body.bought;
+  let boughtStatus = 0;
+
+  if (!bought) {
+    boughtStatus = 1;
+  }
+
+  const sqlPost =
+    'UPDATE ListInfo SET bought = "' +
+    boughtStatus +
+    '" WHERE id = "' +
+    itemId +
+    '"';
+  connection.query(sqlPost, function (err, rows, fields) {
+    if (err) {
+      console.log(err);
+      res.status(404).json({ err });
+      return;
+    }
+  });
+});
 
 app.use('/', router);
 app.listen(process.env.port || 3000);

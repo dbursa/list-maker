@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <link rel="stylesheet" href="stylesheets/style.css">
 <link rel="stylesheet" href="/css/bootstrap.min.css">
+<script src="/jquery/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
 </head>
@@ -35,25 +36,46 @@
             let inputGenerate = document.createElement("input");
             inputGenerate.classList.add('form-check-input')
             inputGenerate.type = 'checkbox'
-            inputGenerate.id = data.id
+            inputGenerate.id = String(data.id)
+            inputGenerate.checked = isChecked(data.bought)
+            inputGenerate.onclick = function(){checking(inputGenerate.id, inputGenerate.checked)} 
             document.getElementById("listGenerator").appendChild(inputGenerate);
         
             let labelGenerate = document.createElement("label");
             labelGenerate.classList.add('form-check-label', 'pl-4', 'h4')
-            labelGenerate.for = data.id
+            labelGenerate.for = String(data.id)
             labelGenerate.innerHTML = data.nameOfItem
             document.getElementById("listGenerator").appendChild(labelGenerate);
 
             let brGenerate = document.createElement("br"); 
             brGenerate.classList.add('mb-3')
             document.getElementById("listGenerator").appendChild(brGenerate);
+
+            function isChecked(koupeno){
+                if (koupeno === 1) {
+                    return false
+                }
+
+                return true
+            }
         }
     }
 
     
 });
-        axios.post('/:itemId', {list: textArea}).then(response => {
-        textArea.innerHTML = JSON.stringify(response);})
+
+
+function checking(generatedId, isBought){     
+    let itemId = generatedId
+    let itemIsBought = true
+
+    if (!isBought) {
+        itemIsBought = false
+    } 
+
+    axios.post('/changeItemStatus', {id: itemId, bought: itemIsBought}).then(response => {
+        })
+}
 
 </script>
 </body>
